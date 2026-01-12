@@ -4,8 +4,13 @@ Auteur : Soumia Hariz
 """
 import sys
 import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+print("SCRIPT :", __file__)
+print("CWD :", os.getcwd())
+print("sys.path AVANT :", sys.path[:3])
 
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, PROJECT_ROOT)
+print("sys.path APRÈS :", sys.path[:3])
 import numpy as np
 from src.model import NeuralNetwork
 from src.metrics import calculate_likelihood
