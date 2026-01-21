@@ -4,11 +4,11 @@ Auteur : Soumia Hariz
 """
 import sys
 import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 import numpy as np
 import matplotlib.pyplot as plt
-from model import NeuralNetwork
+from src.model import NeuralNetwork
 
 # ========================================
 # DONNÉES DU PROJET
@@ -29,10 +29,11 @@ y_train = np.array([
 # ========================================
 # PARAMÈTRES DU MODÈLE (du PDF)
 # ========================================
-beta_0 = [0.3, -1.0, -0.5]
-omega_0 = -1.0
+# ✅ CORRECTION : omega_0 doit être un vecteur
+beta_0 = np.array([0.3, -1.0, -0.5])
+omega_0 = np.array([-1.0, 1.8, 0.65])  # ✅ Vecteur de 3 éléments
 beta_1 = 2.6
-omega_1 = [-24.0, -8.0, 50.0]
+omega_1 = np.array([-24.0, -8.0, 50.0])
 
 # ========================================
 # CRÉER LE MODÈLE
@@ -46,12 +47,8 @@ model = NeuralNetwork(beta_0, omega_0, beta_1, omega_1)
 # ========================================
 # CALCULER f(x) et λ(x) pour x de 0 à 1
 # ========================================
-x_range = np.linspace(0, 1, 100)
-
-# Calculer f(x)
+x_range = np.arange(0, 1.01, 0.01)  # Pas de 0.01 comme demandé
 f_values = model.forward(x_range)
-
-# Calculer λ(x) = sigmoid(f(x))
 lambda_values = model.predict_proba(x_range)
 
 print(f"\nCalculs effectués pour {len(x_range)} points")
@@ -61,49 +58,61 @@ print(f"Valeur min de λ(x): {np.min(lambda_values):.4f}")
 print(f"Valeur max de λ(x): {np.max(lambda_values):.4f}")
 
 # ========================================
-# VISUALISATION
+# VISUALISATION - DEUX GRAPHIQUES SUR UNE SEULE FIGURE
 # ========================================
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
-# Graphique 1: f(x) (avant sigmoid)
+# ─────────────────────────────────────
+# GRAPHIQUE 1 (GAUCHE) : f(x)
+# ─────────────────────────────────────
 axes[0].plot(x_range, f_values, 'b-', linewidth=2)
+axes[0].axhline(y=0, color='k', linestyle='--', linewidth=0.5, alpha=0.5)
 axes[0].set_xlabel('x', fontsize=12)
 axes[0].set_ylabel('f(x)', fontsize=12)
 axes[0].set_title('Sortie du réseau : f(x)', fontsize=14, fontweight='bold')
 axes[0].grid(True, alpha=0.3)
 axes[0].set_xlim(0, 1)
 
-# Graphique 2: λ(x) avec les données d'entraînement
+# ─────────────────────────────────────
+# GRAPHIQUE 2 (DROITE) : λ(x) avec données
+# ─────────────────────────────────────
+# ✅ Tracer directement sur axes[1] au lieu de créer une nouvelle figure
 axes[1].plot(x_range, lambda_values, 'b-', linewidth=2, label='λ(x) = P(y=1|x)')
+
+# Points d'entraînement (cercles noirs)
 axes[1].scatter(x_train, y_train, 
-                color='black', 
-                s=80, 
-                edgecolors='black', 
-                facecolors='none', 
-                linewidths=2, 
+                color='black',           # Couleur noire
+                s=80,                    # Taille des points
+                edgecolors='black',      # Contour noir
+                facecolors='none',       # Intérieur vide (cercle)
+                linewidths=2,            # Épaisseur du contour
                 label='Données d\'entraînement',
-                zorder=5)
+                zorder=5)                # Au-dessus de la courbe
+
 axes[1].set_xlabel('x', fontsize=12)
-axes[1].set_ylabel('Probabilité λ', fontsize=12)
+axes[1].set_ylabel('λ(x) ou P(y=1|x)', fontsize=12)
 axes[1].set_title('λ(x) = P(y=1|x) et données d\'entraînement', 
-                 fontsize=14, fontweight='bold')
+                  fontsize=14, fontweight='bold')
 axes[1].grid(True, alpha=0.3)
 axes[1].legend(fontsize=10)
 axes[1].set_xlim(0, 1)
 axes[1].set_ylim(-0.1, 1.1)
 
+# ─────────────────────────────────────
+# SAUVEGARDER ET AFFICHER
+# ─────────────────────────────────────
 plt.tight_layout()
 
-# Créer le dossier results/figures s'il n'existe pas
+# Créer le dossier de sortie
 output_dir = os.path.join(os.path.dirname(__file__), '..', 'results', 'figures')
 os.makedirs(output_dir, exist_ok=True)
 
-# Sauvegarder le graphique
-output_path = os.path.join(output_dir, 'question1_sigmoid.png')
+# Sauvegarder la figure complète (avec les 2 graphiques)
+output_path = os.path.join(output_dir, 'question1_complete.png')
 plt.savefig(output_path, dpi=300, bbox_inches='tight')
 print(f"\n✅ Graphique sauvegardé : {output_path}")
 
-# Afficher le graphique
+# Afficher la figure
 plt.show()
 
 print("\n" + "="*60)
