@@ -1,0 +1,6 @@
+QUESTION 2 : RÉSULTATS
+============================================================
+
+Nombre de points d'entraînement : 20
+Likelihood total : 0.000000472712704
+Log-Likelihood : -14.564778023270106
