@@ -94,4 +94,5 @@ pytest -q
 ---
 
 ## 📄 Contact
-- Auteur : Soumia Hariz — ajouter contact si souhaité.
+- Auteur : Soumia Hariz — soumiahariz20@gmail.com
+- 
