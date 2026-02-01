@@ -1,7 +1,3 @@
-Voici un README concis et professionnel en français prêt à être utilisé pour votre projet. Voulez-vous que je l’ajoute directement au dépôt (création/écrasement de README.md) ? ✅
-
----
-
 # Automatic_Learning 🧠
 
 **Projet pédagogique** d’un petit réseau de neurones pour classification binaire (Auteur : Soumia Hariz).
@@ -97,10 +93,5 @@ pytest -q
 
 ---
 
-## 📄 Licence & Contact
-- Licence : (à préciser)  
+## 📄 Contact
 - Auteur : Soumia Hariz — ajouter contact si souhaité.
-
----
-
-Besoin d’ajustements (langue, ton, sections additionnelles, badge CI, ou création automatique du fichier README.md) ? Dites-moi et je l’applique. 🔧
